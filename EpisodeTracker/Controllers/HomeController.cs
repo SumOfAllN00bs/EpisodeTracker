@@ -26,5 +26,18 @@ namespace EpisodeTracker.Controllers
 
             return View();
         }
+
+        public ActionResult Shows()
+        {
+            return View();
+        }
+        public ActionResult Today()
+        {
+            return View();
+        }
+        public ActionResult Episodes()
+        {
+            return View();
+        }
     }
 }

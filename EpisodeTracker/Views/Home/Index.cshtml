@@ -1,18 +1,17 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<div height="100px">
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-6">
-            @Html.ActionLink("Search for Shows", "Shows");
-            @Html.ActionLink("Today's Episodes", "Today");
-            @Html.ActionLink("All Episodes", "Episodes");
-        </div>
-        <div class="col-md-3">
-        </div>
+<div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+        <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="Search for Shows" onclick="location.href='@Url.Action("Shows")'" />
+        <p>Search for shows to add to your episode tracking session.</p>
+        <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="Today's Episodes" onclick="location.href='@Url.Action("Today")'" />
+        <p>Show all the episodes that will air today.</p>
+        <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="All Episodes" onclick="location.href='@Url.Action("Episodes")'" />
+        <p>Explore all the episodes listed for a given show.</p>
+    </div>
+    <div class="col-md-3">
     </div>
 </div>
