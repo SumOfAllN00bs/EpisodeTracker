@@ -1,32 +1,24 @@
-﻿
+﻿@model QuickType.ShowSearch
+
 @{
     ViewBag.Title = "Shows";
 }
 
 <h2>Shows</h2>
 
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
-<p>dummy</p>
+@if (ViewBag.Results == null)
+{
+    using (Html.BeginForm("Shows", "Home", FormMethod.Post))
+    {
+        <p>Search for shows you want to keep track of:</p>
+        @Html.TextBox("SearchByShow")
+        <input class="btn btn-outline-primary btn-lg actionbutton" type="submit" value="Search By Show" />
+    }
+}
+else
+{
+    foreach (var Show in ViewBag.Results)
+    {
+        Html.LabelFor(model => model.Show.Name);
+    }
+}
