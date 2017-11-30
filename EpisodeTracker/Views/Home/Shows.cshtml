@@ -1,12 +1,15 @@
-﻿@model QuickType.ShowSearch
+﻿@model IEnumerable<QuickType.ShowSearch>
 
 @{
     ViewBag.Title = "Shows";
+    int rowcounter = 0;
 }
 
 <h2>Shows</h2>
-
-@if (ViewBag.Results == null)
+<div class="popup">
+    <span class="popuptext" id="popupalert"></span>
+</div>
+@if (Model == null)
 {
     using (Html.BeginForm("Shows", "Home", FormMethod.Post))
     {
@@ -17,8 +20,87 @@
 }
 else
 {
-    foreach (var Show in ViewBag.Results)
-    {
-        Html.LabelFor(model => model.Show.Name);
+    <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="Return to Search" onclick="location.href='@Url.Action("Shows")'" />
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" class="col-md-2">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Name)
+                </th>
+                <th scope="col" class="col-md-1">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Status)
+                </th>
+                <th scope="col" class="col-md-2">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Genres_short)
+                </th>
+                <th scope="col" class="col-md-1">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Id)
+                </th>
+                <th scope="col" class="col-md-2">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Schedule.Days_short)
+                </th>
+                <th scope="col" class="col-md-1">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Schedule.Time)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showid="@(item.Show.Id)">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Show.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Show.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Show.Genres_short)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Show.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Show.Schedule.Days_short)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Show.Schedule.Time)
+                    </td>
+                </tr>
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showid="@(item.Show.Id)">
+                    <td colspan="6" class="seperator">
+                        <div class="col-md-1">
+                            @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Summary)
+                        </div>
+                        <div style="overflow: hidden">
+                            @Html.Raw(item.Show.Summary)
+                        </div>
+                    </td>
+                </tr>
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showid="@(item.Show.Id)">
+                    <td colspan="6">@* just wanted to have a seperator. Apparantly you can't add padding or margins to td's or tr's*@
+                    </td>
+                </tr>
+                {
+                    rowcounter++;
+                }
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model != null)
+{
+    @section Scripts{
+        <script>
+            $('tr[showid]').on("click", function () {
+                $('tr[showid=' + $(this).attr("showid") + ']')
+                if ($('tr[showid=' + $(this).attr("showid") + ']').hasClass("selected")) {
+                    $('tr[showid=' + $(this).attr("showid") + ']').removeClass("selected");
+                } else {
+                    $('tr[showid=' + $(this).attr("showid") + ']').addClass("selected");
+                }
+            });
+        </script>
     }
 }

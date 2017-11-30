@@ -12,6 +12,7 @@ namespace QuickType
     using System.ComponentModel.DataAnnotations;
     using Newtonsoft.Json;
     using System.ComponentModel;
+    using System.Text;
 
     public partial class ShowSearch
     {
@@ -33,6 +34,24 @@ namespace QuickType
         [JsonProperty("genres")]
         [DisplayName("Genres")]
         public List<string> Genres { get; set; }
+
+        [DisplayName("Genres List")]
+        public string Genres_short
+        {
+            get
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (string s in Genres)
+                {
+                    stringBuilder.Append(s + ", ");
+                }
+                if (stringBuilder.Length > 1)
+                {
+                    stringBuilder.Length -= 2;
+                }
+                return stringBuilder.ToString();
+            }
+        }
 
         [JsonProperty("id")]
         [DisplayName("Id")]
@@ -127,6 +146,15 @@ namespace QuickType
         [JsonProperty("days")]
         [DisplayName("Days")]
         public List<string> Days { get; set; }
+
+        [DisplayName("List Of Days")]
+        public string Days_short
+        {
+            get
+            {
+                return String.Join(String.Empty, Days);
+            }
+        } 
 
         [JsonProperty("time")]
         [DisplayName("Time")]

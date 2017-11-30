@@ -37,13 +37,13 @@ namespace EpisodeTracker.Controllers
         [HttpPost]
         public ActionResult Shows(string SearchByShow)
         {
-            using (var webClient = new System.Net.WebClient())
+            List<ShowSearch> data;
+            using (var webClient = new System.Net.WebClient() { Encoding = System.Text.Encoding.UTF8})//UTF8 used so that I can properly handle certain symbols that are used in the information returned in the json object
             {
                 var json = webClient.DownloadString("http://api.tvmaze.com/search/shows?q=" + HttpUtility.UrlEncode(SearchByShow));
-                var data = ShowSearch.FromJson(json);
-                ViewBag.Results = data;
+                data = ShowSearch.FromJson(json);
             }
-            return View();
+            return View(data);
         }
         public ActionResult Today()
         {
