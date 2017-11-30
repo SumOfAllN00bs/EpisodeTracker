@@ -46,10 +46,10 @@ input:hover {
 .footer {
     margin: auto auto 0 auto;
 }
-td.seperator {
+.seperator {
     padding-bottom:100px
 }
-tr.selected td {
+.selected td {
     background-color: #333;
     color: #fff;    
 }
@@ -61,22 +61,21 @@ tr.selected td {
 }
 .popup {
     position: relative;
-    display: inline-block;
-    cursor: pointer;
+    display: block;
 }
 .popup .popuptext {
+    display: inline-block;
+    position: fixed;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     visibility: hidden;
-    width: 160px;
     background-color: #555;
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 8px 0;
-    position: absolute;
     z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -80px;
 }
 .popup .popuptext::after {
     content: "";
@@ -91,6 +90,7 @@ tr.selected td {
 .popup .show {
     visibility: visible;
     -webkit-animation: fadeIn 1s;
+    -moz-animation: fadeIn 1s;
     animation: fadeIn 1s
 }
 @-webkit-keyframes fadeIn {

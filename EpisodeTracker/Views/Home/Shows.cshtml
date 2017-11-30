@@ -47,7 +47,7 @@ else
         <tbody>
             @foreach (var item in Model)
             {
-                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showid="@(item.Show.Id)">
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showname="@(item.Show.Name)" showid="@(item.Show.Id)">
                     <td>
                         @Html.DisplayFor(modelItem => item.Show.Name)
                     </td>
@@ -67,7 +67,7 @@ else
                         @Html.DisplayFor(modelItem => item.Show.Schedule.Time)
                     </td>
                 </tr>
-                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showid="@(item.Show.Id)">
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showname="@(item.Show.Name)" showid="@(item.Show.Id)">
                     <td colspan="6" class="seperator">
                         <div class="col-md-1">
                             @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Summary)
@@ -77,7 +77,7 @@ else
                         </div>
                     </td>
                 </tr>
-                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showid="@(item.Show.Id)">
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" showname="@(item.Show.Name)" showid="@(item.Show.Id)">
                     <td colspan="6">@* just wanted to have a seperator. Apparantly you can't add padding or margins to td's or tr's*@
                     </td>
                 </tr>
@@ -92,13 +92,36 @@ else
 @if (Model != null)
 {
     @section Scripts{
+        <script src="https://unpkg.com/dexie@latest/dist/dexie.js">
+        </script>
         <script>
+            var db = new Dexie("showstotrack");
+            db.version(1).stores({
+                shows: 'showid'
+            });
+            db.open();
             $('tr[showid]').on("click", function () {
                 $('tr[showid=' + $(this).attr("showid") + ']')
                 if ($('tr[showid=' + $(this).attr("showid") + ']').hasClass("selected")) {
                     $('tr[showid=' + $(this).attr("showid") + ']').removeClass("selected");
+                    db.shows.delete($(this).attr("showid"));
+                    $('#popupalert').text("Removing tracker from show: " + $(this).attr("showname"));
+                    $('#popupalert').removeClass("show").addClass("show");
+                    setTimeout(function () {
+                        $('#popupalert').removeClass("show");
+                    }, 2500);
                 } else {
                     $('tr[showid=' + $(this).attr("showid") + ']').addClass("selected");
+                    db.shows.add({ showid: $(this).attr("showid") }).then(function () { }, function () {
+                        console.log("show already added");
+                    }).catch(function () {
+                        console.log("whoops already added");
+                    });
+                    $('#popupalert').text("Tracking show: " + $(this).attr("showname"));
+                    $('#popupalert').removeClass("show").addClass("show");
+                    setTimeout(function () {
+                        $('#popupalert').removeClass("show");
+                    }, 2500);
                 }
             });
         </script>
