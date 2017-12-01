@@ -4,7 +4,7 @@
 //
 //    var data = ShowSearch.FromJson(jsonString);
 //
-namespace QuickType
+namespace ShowSearchJson
 {
     using System;
     using System.Net;

@@ -1,7 +1,52 @@
-﻿
-@{
-    ViewBag.Title = "Episodes";
+﻿@model IEnumerable<EpisodesJson.Episodes>
+@if (ViewBag.Filter == "Today")
+{
+    ViewBag.Title = "Today";
+    <h2>Today</h2>
 }
+else
+{
+    ViewBag.Title = "Episodes";
+    <h2>Episodes</h2>
+}
+@if (Model == null)
+{
+    <p>Nothing to show!!</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" class="col-md-2">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Name)
+                </th>
+                <th scope="col" class="col-md-1">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Status)
+                </th>
+                <th scope="col" class="col-md-2">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Genres_short)
+                </th>
+                <th scope="col" class="col-md-1">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Id)
+                </th>
+                <th scope="col" class="col-md-2">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Schedule.Days_short)
+                </th>
+                <th scope="col" class="col-md-1">
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Schedule.Time)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
 
-<h2>Episodes</h2>
-
+            }
+        </tbody>
+    </table>
+}
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}

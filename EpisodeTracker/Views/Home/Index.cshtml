@@ -11,11 +11,36 @@
     <div class="col-md-6">
         <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="Search for Shows" onclick="location.href='@Url.Action("Shows")'" />
         <p>Search for shows to add to your episode tracking session.</p>
-        <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="Today's Episodes" onclick="location.href='@Url.Action("Today")'" />
+        @using (Html.BeginForm("Today", "Home", FormMethod.Post, new { }))
+        {
+            @Html.Hidden("hidden_today", null, new { @class = "showidlist" })
+            <input class="btn btn-outline-primary btn-lg actionbutton" type="submit" value="Today's Episodes" />
+        }
         <p>Show all the episodes that will air today.</p>
-        <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="All Episodes" onclick="location.href='@Url.Action("Episodes")'" />
+        @using (Html.BeginForm("Episodes", "Home", FormMethod.Post, new { }))
+        {
+            @Html.Hidden("hidden_episodes", null, new { @class = "showidlist" })
+            <input class="btn btn-outline-primary btn-lg actionbutton" type="submit" value="All Episodes" />
+        }
         <p>Explore all the episodes listed for a given show.</p>
     </div>
     <div class="col-md-3">
     </div>
 </div>
+@section Scripts{
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js">
+    </script>
+    <script>
+        var db = new Dexie("showstotrack");
+        db.version(1).stores({
+            shows: 'showid'
+        });
+        db.open();
+        $(function () {
+            db.shows.toArray().then(function (result) {
+                var stest = JSON.stringify(result);
+                $(".showidlist").val(stest);
+            });
+        });
+    </script>
+}
