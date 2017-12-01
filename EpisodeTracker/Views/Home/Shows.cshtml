@@ -5,7 +5,6 @@
     int rowcounter = 0;
 }
 
-<h2>Shows</h2>
 <div class="popup">
     <span class="popuptext" id="popupalert"></span>
 </div>
@@ -13,13 +12,14 @@
 {
     using (Html.BeginForm("Shows", "Home", FormMethod.Post))
     {
-        <p>Search for shows you want to keep track of:</p>
+        <h2>Search for shows to track</h2>
         @Html.TextBox("SearchByShow")
         <input class="btn btn-outline-primary btn-lg actionbutton" type="submit" value="Search By Show" />
     }
 }
 else
 {
+    <h2>Search results</h2>
     <input class="btn btn-outline-primary btn-lg actionbutton" type="button" value="Return to Search" onclick="location.href='@Url.Action("Shows")'" />
     <table class="table">
         <thead>
@@ -100,6 +100,12 @@ else
                 shows: 'showid'
             });
             db.open();
+            $(function () {
+                db.shows.each((show) => {
+                    console.log(show.showid);
+                    $('tr[showid=' + show.showid + ']').addClass("selected");
+                });
+            });
             $('tr[showid]').on("click", function () {
                 $('tr[showid=' + $(this).attr("showid") + ']')
                 if ($('tr[showid=' + $(this).attr("showid") + ']').hasClass("selected")) {

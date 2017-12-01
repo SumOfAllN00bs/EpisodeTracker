@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<EpisodesJson.Episodes>
+@{
+    int rowcounter = 0;
+}
 @if (ViewBag.Filter == "Today")
 {
-    ViewBag.Title = "Today";
-    <h2>Today</h2>
+    ViewBag.Title = "Episodes scheduled for today";
+    <h2>Episodes scheduled for today</h2>
 }
 else
 {
-    ViewBag.Title = "Episodes";
-    <h2>Episodes</h2>
+    ViewBag.Title = "All episodes for shows being tracked";
+    <h2>All episodes for shows being tracked</h2>
 }
-@if (Model == null)
+@if (Model == null || Model.Count() == 0)
 {
     <p>Nothing to show!!</p>
 }
@@ -19,29 +22,60 @@ else
         <thead>
             <tr>
                 <th scope="col" class="col-md-2">
-                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Name)
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Name)
                 </th>
                 <th scope="col" class="col-md-1">
-                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Status)
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Number)
                 </th>
                 <th scope="col" class="col-md-2">
-                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Genres_short)
-                </th>
-                <th scope="col" class="col-md-1">
-                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Id)
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Season)
                 </th>
                 <th scope="col" class="col-md-2">
-                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Schedule.Days_short)
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Airstamp)
                 </th>
                 <th scope="col" class="col-md-1">
-                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Show.Schedule.Time)
+                    @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Url)
                 </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" rowid="@rowcounter">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Season)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Airstamp)
+                    </td>
+                    <td>
+                        <a href="@(item.Url)">@(item.Url)</a>
+                    </td>
+                </tr>
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" rowid="@rowcounter">
+                    <td colspan="6" class="seperator">
+                        <div class="col-md-1">
+                            @Html.LabelFor(modelItem => modelItem.FirstOrDefault().Summary)
+                        </div>
+                        <div style="overflow: hidden">
+                            @Html.Raw(item.Summary)
+                        </div>
+                    </td>
+                </tr>
+                <tr class="@((rowcounter%2!=0) ? "off" : "on")" rowid="@rowcounter">
+                    <td colspan="5">
+                        @* just wanted to have a seperator. Apparantly you can't add padding or margins to td's or tr's*@
+                    </td>
+                </tr>
+                {
+                    rowcounter++;
+                }
             }
         </tbody>
     </table>
